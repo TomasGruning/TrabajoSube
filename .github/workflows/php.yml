@@ -4,15 +4,14 @@
   	php-version: '8.2'
     coverage: xdebug
 
+- name: Ejecutar tests
+  run: composer run-script test
 
 - name: PHPUnit tests
   uses: php-actions/phpunit@v3
-  with:
+  with: 
       php_extensions: "xdebug"
       coverage_clover: "coverage/clover.xml"
   env:
       XDEBUG_MODE: coverage
        
-- name: Ejecutar tests
-  run: composer run-script test
-

@@ -3,8 +3,18 @@ namespace TrabajoSube;
 
 class Colectivo
 {
-    public $linea;
-    protected $precio = 120;
+    protected $linea;
+    public $precio = 120;
+    
+    public function __construct($linea){
+        $this->linea = $linea;
+    }
+    
+    //    Funcion de ejemplo para test
+    public function getLinea(){
+        return $this->linea;
+    }
+
     function pagarBoleto($Tarjeta)
     {
         $Tarjeta->saldo = $Tarjeta->saldo - $this->precio;
