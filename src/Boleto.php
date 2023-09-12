@@ -7,8 +7,7 @@ class Boleto
     public $hora;
     public $id;
 
-    function nuevoRecibo($id, $fecha, $hora, $Colectivo)
-    {
+    function nuevoRecibo($id, $fecha, $hora, $Colectivo){
         return "Numero de boleto: " + $id + " Fecha: " + $fecha + " Hora: " + $hora + " Linea de colectivo " + $Colectivo->linea + " precio: " + $Colectivo->precio;
     }
 }
