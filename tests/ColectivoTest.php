@@ -1,9 +1,10 @@
-<?php 
+<?php
 
 namespace TrabajoSube;
 
 use PHPUnit\Framework\TestCase;
 
-class ColectivoTest extends TestCase{
-   
+class ColectivoTest extends TestCase
+{
+
 }
