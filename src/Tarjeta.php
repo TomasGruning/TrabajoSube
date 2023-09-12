@@ -14,7 +14,7 @@ class Tarjeta
         $this->saldo = $saldo;
     }
 
-    public function recargarSaldo($id, $recarga, $recargasPosibles)
+    public function recargarSaldo($recarga)
     {
         if(($this->saldo + $recarga) > 6600){
             return "El saldo maximo de $6600 ha sido superado";
@@ -22,12 +22,12 @@ class Tarjeta
         
         else{
             for($i = 0; $i < 23; $i++){
-                if ($recarga == $recargasPosibles[$i]) {
+                if ($recarga == $this->recargasPosibles[$i]) {
                     $this->saldo = $this->saldo + $recarga;
-                    return "Recarga completa. Nuevo saldo: " + $this->saldo;
+                    return $this->saldo;
                 }
             }
-            return "No se reconoce la cantidad a recargar";
+            return false;
         }
 
     }
