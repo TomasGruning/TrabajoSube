@@ -21,3 +21,5 @@ class ColectivoTest extends TestCase
         $this->assertEquals($cole->pagarCon($tarjeta), false);
     }
 }
+
+?>
