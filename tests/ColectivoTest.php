@@ -15,7 +15,7 @@ class ColectivoTest extends TestCase
         $cole = new Colectivo(103);
         
         $tarjeta = new Tarjeta(uniqid(), 300);
-        $this->assertEquals($cole->pagarCon($tarjeta), "Boleto Pagado. Nuevo saldo: 180");
+        $this->assertEquals($cole->pagarCon($tarjeta), 180);
 
         $tarjeta->saldo = -100;
         $this->assertEquals($cole->pagarCon($tarjeta), false);

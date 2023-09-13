@@ -3,7 +3,7 @@ namespace TrabajoSube;
 
 class Colectivo
 {
-    protected $linea;
+    public $linea;
     
     public function __construct($linea){
         $this->linea = $linea;
@@ -20,7 +20,9 @@ class Colectivo
 
             $Tarjeta->saldo = $Tarjeta->saldo - $Tarjeta->precio;
 
-            return "Boleto Pagado. Nuevo saldo: " . $Tarjeta->saldo;
+            $boleto = new Boleto(uniqid(), time(), $this, $Tarjeta);
+            array_unshift($Tarjeta->historialBoletos, $boleto);
+            return $Tarjeta->saldo;
         }
         else{
             return false;
