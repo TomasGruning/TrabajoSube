@@ -4,11 +4,9 @@ namespace TrabajoSube;
 class Colectivo
 {
     protected $linea;
-    protected $precio = 120;
     
-    public function __construct($linea, $precio=120){
+    public function __construct($linea){
         $this->linea = $linea;
-        $this->precio = $precio;
     }
     
     //Funcion de ejemplo para test
@@ -18,9 +16,9 @@ class Colectivo
 
     public function pagarCon($Tarjeta)
     {
-        if($Tarjeta->saldo - $this->precio >= $Tarjeta->saldoMinimo){
+        if($Tarjeta->saldo - $Tarjeta->precio >= $Tarjeta->saldoMinimo){
 
-            $Tarjeta->saldo = $Tarjeta->saldo - $this->precio;
+            $Tarjeta->saldo = $Tarjeta->saldo - $Tarjeta->precio;
 
             return "Boleto Pagado. Nuevo saldo: " . $Tarjeta->saldo;
         }
