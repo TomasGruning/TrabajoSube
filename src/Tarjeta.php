@@ -26,7 +26,7 @@ class Tarjeta
             $this->excedente = ($this->saldo + $recarga) - $this->saldoMaximo;
             $this->cargaPendiente = $this->cargaPendiente + $this->excedente;
 
-            return "El saldo maximo de $6600 ha sido superado. Nuevo saldo: 6600";
+            return $this->saldo;
         }
         
         else{
