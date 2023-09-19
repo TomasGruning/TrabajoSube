@@ -22,8 +22,8 @@ class Tarjeta
     public function recargarSaldo($recarga)
     {
         if(($this->saldo + $recarga) > $this->saldoMaximo){
-            $this->saldo = $this->saldoMaximo;
             $this->excedente = ($this->saldo + $recarga) - $this->saldoMaximo;
+            $this->saldo = $this->saldoMaximo;
             $this->cargaPendiente = $this->cargaPendiente + $this->excedente;
 
             return $this->saldo;

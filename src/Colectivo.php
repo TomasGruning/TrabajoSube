@@ -36,6 +36,7 @@ class Colectivo
                     }
                     if ($limiteExcedido) {
                         $Tarjeta->saldo = $Tarjeta->saldo - $Tarjeta->precio * 2;
+                        $Tarjeta->recargarSaldo($Tarjeta->cargaPendiente);
 
                         $boleto = new Boleto(uniqid(), time(), $this, $Tarjeta);
                         array_unshift($Tarjeta->historialBoletos, $boleto);
@@ -45,8 +46,7 @@ class Colectivo
             }
 
             $Tarjeta->saldo = $Tarjeta->saldo - $Tarjeta->precio;
-
-            $Tarjeta->recargarSaldo($Tarjeta->pendiente);
+            $Tarjeta->recargarSaldo($Tarjeta->cargaPendiente);
 
             $boleto = new Boleto(uniqid(), time(), $this, $Tarjeta);
             array_unshift($Tarjeta->historialBoletos, $boleto);

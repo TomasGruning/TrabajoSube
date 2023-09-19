@@ -34,7 +34,7 @@ class TarjetasTest extends TestCase
 
         $this->assertEquals($tarjeta->recargarSaldo(200), 6600);
         $this->assertEquals($tarjeta->cargaPendiente, 100);
-        $this->assertEquals($cole->pagarCon($tarjeta), 6600);
+        $this->assertEquals($cole->pagarCon($tarjeta), 6580);
         $this->assertEquals($tarjeta->cargaPendiente, 80);
     }
 }
