@@ -20,6 +20,8 @@ class Colectivo
 
             $Tarjeta->saldo = $Tarjeta->saldo - $Tarjeta->precio;
 
+            $Tarjeta->recargarSaldo($Tarjeta->pendiente);
+
             $boleto = new Boleto(uniqid(), time(), $this, $Tarjeta);
             array_unshift($Tarjeta->historialBoletos, $boleto);
             return $Tarjeta->saldo;

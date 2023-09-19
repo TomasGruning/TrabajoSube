@@ -7,9 +7,11 @@ class Tarjeta
     public $saldo;
     public $precio = 120;
     public $saldoMinimo = -211.84;
+    public $saldoMaximo = 6600;
     public $recargasPosibles = [150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 2000, 2500, 3000, 3500, 4000];
     public $historialBoletos = [];
-    
+    public $excedente;
+    public $cargaPendiente = 0;
     
     public function __construct($id, $saldo=0)
     {
@@ -19,8 +21,12 @@ class Tarjeta
 
     public function recargarSaldo($recarga)
     {
-        if(($this->saldo + $recarga) > 6600){
-            return "El saldo maximo de $6600 ha sido superado";
+        if(($this->saldo + $recarga) > $this->saldoMaximo){
+            $this->saldo = $this->saldoMaximo;
+            $this->excedente = ($this->saldo + $recarga) - $this->saldoMaximo;
+            $this->cargaPendiente = $this->cargaPendiente + $this->excedente;
+
+            return "El saldo maximo de $6600 ha sido superado. Nuevo saldo: 6600";
         }
         
         else{

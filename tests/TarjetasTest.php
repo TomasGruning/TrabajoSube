@@ -25,6 +25,16 @@ class TarjetasTest extends TestCase
         $this->assertEquals($cole->pagarCon($tarjeta), 240);
         $this->assertEquals($cole->pagarCon($tarjeta), 180);
     }
+
+    public function testSaldoMaximo(){
+        $cole = new Colectivo(103);
+        $tarjeta = new Tarjeta(uniqid(), 6500);
+
+        $this->assertEquals($tarjeta->recargarSaldo(200), 6600);
+        $this->assertEquals($tarjeta->cargaPendiente, 100);
+        $this->assertEquals($cole->pagarCon($tarjeta), 6600);
+        $this->assertEquals($tarjeta->cargaPendiente, 80);
+    }
 }
 
 ?>
