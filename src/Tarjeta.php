@@ -13,7 +13,7 @@ class Tarjeta
     public $excedente;
     public $cargaPendiente = 0;
     
-    public function __construct($id, $saldo=0)
+    public function __construct($id, $saldo = 0)
     {
         $this->id = $id;
         $this->saldo = $saldo;
