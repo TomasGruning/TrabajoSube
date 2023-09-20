@@ -20,36 +20,50 @@ class Colectivo
     {
         if ($Tarjeta->saldo - $Tarjeta->precio >= $Tarjeta->saldoMinimo) {
 
+            $limiteExcedido = true;
+
             if (get_class($Tarjeta) == "TrabajoSube\FranquiciaParcial") {
                 if (isset($Tarjeta->historialBoletos[1]) && (time() - $Tarjeta->historialBoletos[0]->fecha_hora) < 5) {
                     return false;
                 }
 
                 if (isset($Tarjeta->historialBoletos[3])) {
-                    $limiteExcedido = true;
-
-                    for ($i = 0; $i < 2; $i++) {
+                    for ($i = 0; $i < 3; $i++) {
                         if (date("d/m/Y", $Tarjeta->historialBoletos[$i]->fecha_hora) != date("d/m/Y", $Tarjeta->historialBoletos[$i + 1]->fecha_hora)) {
                             $limiteExcedido = false;
                             break;
                         }
                     }
-                    if ($limiteExcedido) {
-                        $Tarjeta->saldo = $Tarjeta->saldo - $Tarjeta->precio * 2;
-                        $Tarjeta->recargarSaldo($Tarjeta->cargaPendiente);
-
-                        $boleto = new Boleto(uniqid(), time(), $this, $Tarjeta);
-                        array_unshift($Tarjeta->historialBoletos, $boleto);
-                        return $Tarjeta->saldo;
-                    }
+                }
+                else{
+                    $limiteExcedido = false;
                 }
             }
 
-            $Tarjeta->saldo = $Tarjeta->saldo - $Tarjeta->precio;
+
+            if (get_class($Tarjeta) == "TrabajoSube\FranquiciaCompleta") {
+                if (isset($Tarjeta->historialBoletos[1])) {
+                    if (date("d/m/Y", $Tarjeta->historialBoletos[0]->fecha_hora) != date("d/m/Y", $Tarjeta->historialBoletos[1]->fecha_hora)) {
+                        $limiteExcedido = false;
+                    }
+                }
+                else{
+                    $limiteExcedido = false;
+                }
+            }
+
+            if ($limiteExcedido) {
+                $Tarjeta->saldo = $Tarjeta->saldo - $Tarjeta->precio;
+            } else {
+                $Tarjeta->saldo = $Tarjeta->saldo - $Tarjeta->precio + $Tarjeta->descuento;
+            }
+
             $Tarjeta->recargarSaldo($Tarjeta->cargaPendiente);
 
             $boleto = new Boleto(uniqid(), time(), $this, $Tarjeta);
+
             array_unshift($Tarjeta->historialBoletos, $boleto);
+
             return $Tarjeta->saldo;
         }
 

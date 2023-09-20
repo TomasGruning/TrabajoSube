@@ -3,7 +3,7 @@ namespace TrabajoSube;
 
 class FranquiciaParcial extends Tarjeta
 {
-    public $precio = 60;
+    public $descuento = 60;
 }
 
 ?>
