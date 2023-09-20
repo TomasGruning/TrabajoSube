@@ -65,6 +65,15 @@ class ColectivoTest extends TestCase
         $this->assertEquals($cole->pagarCon($tarjeta), 640);
 
     }
+
+    public function testCompletaLimitacionDia(){
+        $cole = new Colectivo(103);
+
+        $tarjeta = new FranquiciaCompleta(uniqid(), 300);
+        $this->assertEquals($cole->pagarCon($tarjeta), 300);
+        $this->assertEquals($cole->pagarCon($tarjeta), 300);
+        $this->assertEquals($cole->pagarCon($tarjeta), 180);
+    }
 }
 
 ?>

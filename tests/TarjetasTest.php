@@ -12,11 +12,6 @@ class TarjetasTest extends TestCase
 
         $tarjeta = new FranquiciaCompleta(uniqid(), 300);
         $this->assertEquals($cole->pagarCon($tarjeta), 300);
-
-        for ($x = 0; $x < 10; $x++) {
-            $cole->pagarCon($tarjeta);
-        }
-        $this->assertEquals($cole->pagarCon($tarjeta), 300);
     }
 
     public function testFranquiciaParcial()
