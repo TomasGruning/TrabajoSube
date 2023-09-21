@@ -23,7 +23,7 @@ class Colectivo
             $limiteExcedido = true;
 
             if (get_class($Tarjeta) == "TrabajoSube\FranquiciaParcial") {
-                if (isset($Tarjeta->historialBoletos[1]) && (time() - $Tarjeta->historialBoletos[0]->fecha_hora) < 5) {
+                if (isset($Tarjeta->historialBoletos[0]) && (time() - $Tarjeta->historialBoletos[0]->fecha_hora) < 5) {
                     return false;
                 }
 

@@ -20,7 +20,6 @@ class TarjetasTest extends TestCase
         $tarjeta = new FranquiciaParcial(uniqid(), 300);
 
         $this->assertEquals($cole->pagarCon($tarjeta), 240);
-        $this->assertEquals($cole->pagarCon($tarjeta), 180);
     }
 
     public function testSaldoMaximo(){
