@@ -16,47 +16,49 @@ class Colectivo
         return $this->linea;
     }
 
+    public function limiteExcedido($Tarjeta){
+        if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto") {
+            if (isset($Tarjeta->historialBoletos[3])) {
+                for ($i = 0; $i < 3; $i++) {
+                    if (date("d/m/Y", $Tarjeta->historialBoletos[$i]->fecha_hora) != date("d/m/Y", $Tarjeta->historialBoletos[$i + 1]->fecha_hora)) {
+                        return false;
+                    }
+                }
+            }
+            else{
+                return false;
+            }
+        }
+
+        else if (get_class($Tarjeta) == "TrabajoSube\BoletoGratuito") {
+            if (isset($Tarjeta->historialBoletos[1])) {
+                if (date("d/m/Y", $Tarjeta->historialBoletos[0]->fecha_hora) != date("d/m/Y", $Tarjeta->historialBoletos[1]->fecha_hora)) {
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+        }
+
+        else if (get_class($Tarjeta) == "TrabajoSube\BoletoGratuitoJubilado"){
+            return false;
+        }
+
+        return true;
+    }
+
     public function pagarCon($Tarjeta)
     {
         if ($Tarjeta->saldo - $Tarjeta->precio >= $Tarjeta->saldoMinimo) {
-
-            $limiteExcedido = true;
 
             if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto") {
                 if (isset($Tarjeta->historialBoletos[0]) && (time() - $Tarjeta->historialBoletos[0]->fecha_hora) < 5) {
                     return false;
                 }
-
-                if (isset($Tarjeta->historialBoletos[3])) {
-                    for ($i = 0; $i < 3; $i++) {
-                        if (date("d/m/Y", $Tarjeta->historialBoletos[$i]->fecha_hora) != date("d/m/Y", $Tarjeta->historialBoletos[$i + 1]->fecha_hora)) {
-                            $limiteExcedido = false;
-                            break;
-                        }
-                    }
-                }
-                else{
-                    $limiteExcedido = false;
-                }
             }
 
-
-            else if (get_class($Tarjeta) == "TrabajoSube\BoletoGratuito") {
-                if (isset($Tarjeta->historialBoletos[1])) {
-                    if (date("d/m/Y", $Tarjeta->historialBoletos[0]->fecha_hora) != date("d/m/Y", $Tarjeta->historialBoletos[1]->fecha_hora)) {
-                        $limiteExcedido = false;
-                    }
-                }
-                else{
-                    $limiteExcedido = false;
-                }
-            }
-
-            else if (get_class($Tarjeta) == "TrabajoSube\BoletoGratuitoJubilado"){
-                $limiteExcedido = false;
-            }
-
-            if ($limiteExcedido) {
+            if ($this->limiteExcedido($Tarjeta)) {
                 $Tarjeta->saldo = $Tarjeta->saldo - $Tarjeta->precio;
             } else {
                 $Tarjeta->saldo = $Tarjeta->saldo - $Tarjeta->precio + $Tarjeta->descuento;
