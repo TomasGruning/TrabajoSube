@@ -3,10 +3,10 @@ namespace TrabajoSube;
 
 class Boleto
 {
-    public $id;
-    public $fecha_hora;
+    private $id;
+    private $fecha_hora;
     public $Colectivo;
-    public $Tarjeta;
+    private $Tarjeta;
 
     public function __construct($id, $fecha_hora, $Colectivo, $Tarjeta)
     {
@@ -14,6 +14,15 @@ class Boleto
         $this->fecha_hora = $fecha_hora;
         $this->Colectivo = $Colectivo;
         $this->Tarjeta = $Tarjeta;
+    }
+
+    public function getTarjeta()
+    {
+        return $this->Tarjeta;
+    }
+    public function getFecha_Hora()
+    {
+        return $this->fecha_hora;
     }
 
     function imprimirRecibo()

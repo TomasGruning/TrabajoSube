@@ -4,7 +4,7 @@ namespace TrabajoSube;
 class Colectivo
 {
     public $linea;
-    public $precio = 120;
+    private $precio = 120;
 
     public function __construct($linea)
     {
@@ -16,33 +16,32 @@ class Colectivo
     {
         return $this->linea;
     }
+    public function getPrecio()
+    {
+        return $this->precio;
+    }
 
-    public function limiteExcedido($Tarjeta){
+    private function limiteExcedido($Tarjeta)
+    {
         if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto") {
             if (isset($Tarjeta->historialBoletos[3])) {
                 for ($i = 0; $i < 3; $i++) {
-                    if (date("d/m/Y", $Tarjeta->historialBoletos[$i]->fecha_hora) != date("d/m/Y", $Tarjeta->historialBoletos[$i + 1]->fecha_hora)) {
+                    if (date("d/m/Y", $Tarjeta->historialBoletos[$i]->getFecha_Hora()) != date("d/m/Y", $Tarjeta->historialBoletos[$i + 1]->getFecha_Hora())) {
                         return false;
                     }
                 }
-            }
-            else{
+            } else {
                 return false;
             }
-        }
-
-        else if (get_class($Tarjeta) == "TrabajoSube\BoletoGratuito") {
+        } else if (get_class($Tarjeta) == "TrabajoSube\BoletoGratuito") {
             if (isset($Tarjeta->historialBoletos[1])) {
-                if (date("d/m/Y", $Tarjeta->historialBoletos[0]->fecha_hora) != date("d/m/Y", $Tarjeta->historialBoletos[1]->fecha_hora)) {
+                if (date("d/m/Y", $Tarjeta->historialBoletos[0]->getFecha_Hora()) != date("d/m/Y", $Tarjeta->historialBoletos[1]->getFecha_Hora())) {
                     return false;
                 }
-            }
-            else{
+            } else {
                 return false;
             }
-        }
-
-        else if (get_class($Tarjeta) == "TrabajoSube\BoletoGratuitoJubilado"){
+        } else if (get_class($Tarjeta) == "TrabajoSube\BoletoGratuitoJubilado") {
             return false;
         }
 
@@ -54,7 +53,7 @@ class Colectivo
         if ($Tarjeta->saldo - $this->precio >= $Tarjeta->saldoMinimo) {
 
             if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto") {
-                if (isset($Tarjeta->historialBoletos[0]) && (time() - $Tarjeta->historialBoletos[0]->fecha_hora) < 5) {
+                if (isset($Tarjeta->historialBoletos[0]) && (time() - $Tarjeta->historialBoletos[0]->getFecha_Hora()) < 5) {
                     return false;
                 }
             }
