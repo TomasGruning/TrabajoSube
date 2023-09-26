@@ -6,18 +6,18 @@ use PHPUnit\Framework\TestCase;
 
 class TarjetasTest extends TestCase
 {
-    public function testFranquiciaCompleta()
+    public function testBoletoGratuito()
     {
         $cole = new Colectivo(103);
 
-        $tarjeta = new FranquiciaCompleta(uniqid(), 300);
+        $tarjeta = new BoletoGratuito(uniqid(), 300);
         $this->assertEquals($cole->pagarCon($tarjeta), 300);
     }
 
-    public function testFranquiciaParcial()
+    public function testMedioBoleto()
     {
         $cole = new Colectivo(103);
-        $tarjeta = new FranquiciaParcial(uniqid(), 300);
+        $tarjeta = new MedioBoleto(uniqid(), 300);
 
         $this->assertEquals($cole->pagarCon($tarjeta), 240);
     }

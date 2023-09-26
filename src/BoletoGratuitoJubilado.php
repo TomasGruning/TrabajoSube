@@ -1,7 +1,7 @@
 <?php
 namespace TrabajoSube;
 
-class FranquiciaCompleta extends Tarjeta
+class BoletoGratuitoJubilado extends Tarjeta
 {
     public $descuento = 120;
 }

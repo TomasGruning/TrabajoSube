@@ -22,7 +22,7 @@ class Colectivo
 
             $limiteExcedido = true;
 
-            if (get_class($Tarjeta) == "TrabajoSube\FranquiciaParcial") {
+            if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto") {
                 if (isset($Tarjeta->historialBoletos[0]) && (time() - $Tarjeta->historialBoletos[0]->fecha_hora) < 5) {
                     return false;
                 }
@@ -41,7 +41,7 @@ class Colectivo
             }
 
 
-            if (get_class($Tarjeta) == "TrabajoSube\FranquiciaCompleta") {
+            else if (get_class($Tarjeta) == "TrabajoSube\BoletoGratuito") {
                 if (isset($Tarjeta->historialBoletos[1])) {
                     if (date("d/m/Y", $Tarjeta->historialBoletos[0]->fecha_hora) != date("d/m/Y", $Tarjeta->historialBoletos[1]->fecha_hora)) {
                         $limiteExcedido = false;
@@ -50,6 +50,10 @@ class Colectivo
                 else{
                     $limiteExcedido = false;
                 }
+            }
+
+            else if (get_class($Tarjeta) == "TrabajoSube\BoletoGratuitoJubilado"){
+                $limiteExcedido = false;
             }
 
             if ($limiteExcedido) {

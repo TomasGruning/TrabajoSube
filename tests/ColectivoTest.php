@@ -28,7 +28,7 @@ class ColectivoTest extends TestCase
         $cole = new Colectivo(103);
 
         //Caso verdadero
-        $tarjeta = new FranquiciaParcial(uniqid(), 300);
+        $tarjeta = new MedioBoleto(uniqid(), 300);
         $cole->pagarCon($tarjeta);
         sleep(6);
 
@@ -47,7 +47,7 @@ class ColectivoTest extends TestCase
         $cole = new Colectivo(103);
 
         //Caso verdadero
-        $tarjeta = new FranquiciaParcial(uniqid(), 300);
+        $tarjeta = new MedioBoleto(uniqid(), 300);
         for ($i = 0; $i < 2; $i++) {
             $cole->pagarCon($tarjeta);
             sleep(6);
@@ -56,7 +56,7 @@ class ColectivoTest extends TestCase
         $this->assertEquals($cole->pagarCon($tarjeta), 120);
 
         //Caso falso
-        $tarjeta = new FranquiciaParcial(uniqid(), 1000);
+        $tarjeta = new MedioBoleto(uniqid(), 1000);
         for ($i = 0; $i < 4; $i++) {
             $cole->pagarCon($tarjeta);
             sleep(6);
@@ -69,10 +69,15 @@ class ColectivoTest extends TestCase
     public function testCompletaLimitacionDia(){
         $cole = new Colectivo(103);
 
-        $tarjeta = new FranquiciaCompleta(uniqid(), 300);
+        $tarjeta = new BoletoGratuito(uniqid(), 300);
         $this->assertEquals($cole->pagarCon($tarjeta), 300);
         $this->assertEquals($cole->pagarCon($tarjeta), 300);
         $this->assertEquals($cole->pagarCon($tarjeta), 180);
+
+        $tarjeta = new BoletoGratuitoJubilado(uniqid(), 300);
+        $this->assertEquals($cole->pagarCon($tarjeta), 300);
+        $this->assertEquals($cole->pagarCon($tarjeta), 300);
+        $this->assertEquals($cole->pagarCon($tarjeta), 300);    
     }
 }
 
