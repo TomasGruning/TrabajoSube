@@ -22,7 +22,7 @@ class Boleto
             "ID Boleto: " . $this->id .
             "\n Fecha y hora: " . date("d/m/Y H:i:s", $this->fecha_hora) .
             "\n Linea de colectivo: " . $this->Colectivo->linea .
-            "\n Precio: " . $this->Tarjeta->precio .
+            "\n Precio: " . $this->Colectivo->precio .
             "\n ID Tarjeta: " . $this->Tarjeta->id .
             "\n Tipo de tarjeta: " . get_class($this->Tarjeta) .
             "\n Saldo restante: " . $this->Tarjeta->saldo;

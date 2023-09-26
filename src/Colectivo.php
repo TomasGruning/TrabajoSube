@@ -4,6 +4,7 @@ namespace TrabajoSube;
 class Colectivo
 {
     public $linea;
+    public $precio = 120;
 
     public function __construct($linea)
     {
@@ -50,7 +51,7 @@ class Colectivo
 
     public function pagarCon($Tarjeta)
     {
-        if ($Tarjeta->saldo - $Tarjeta->precio >= $Tarjeta->saldoMinimo) {
+        if ($Tarjeta->saldo - $this->precio >= $Tarjeta->saldoMinimo) {
 
             if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto") {
                 if (isset($Tarjeta->historialBoletos[0]) && (time() - $Tarjeta->historialBoletos[0]->fecha_hora) < 5) {
@@ -59,9 +60,9 @@ class Colectivo
             }
 
             if ($this->limiteExcedido($Tarjeta)) {
-                $Tarjeta->saldo = $Tarjeta->saldo - $Tarjeta->precio;
+                $Tarjeta->saldo = $Tarjeta->saldo - $this->precio;
             } else {
-                $Tarjeta->saldo = $Tarjeta->saldo - $Tarjeta->precio + $Tarjeta->descuento;
+                $Tarjeta->saldo = $Tarjeta->saldo - $this->precio + $Tarjeta->descuento;
             }
 
             $Tarjeta->recargarSaldo($Tarjeta->cargaPendiente);

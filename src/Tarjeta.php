@@ -3,9 +3,8 @@ namespace TrabajoSube;
 
 class Tarjeta
 {
-    public $id;
+    private $id;
     public $saldo;
-    public $precio = 120;
     public $descuento = 0;
     public $saldoMinimo = -211.84;
     public $saldoMaximo = 6600;
