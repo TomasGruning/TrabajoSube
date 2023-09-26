@@ -50,7 +50,7 @@ class Colectivo
 
     public function pagarCon($Tarjeta)
     {
-        if ($Tarjeta->saldo - $this->precio >= $Tarjeta->saldoMinimo) {
+        if ($Tarjeta->saldo - $this->precio >= $Tarjeta->getSaldoMinimo()) {
 
             if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto") {
                 if (isset($Tarjeta->historialBoletos[0]) && (time() - $Tarjeta->historialBoletos[0]->getFecha_Hora()) < 5) {
@@ -64,13 +64,7 @@ class Colectivo
                 $Tarjeta->saldo = $Tarjeta->saldo - $this->precio + $Tarjeta->descuento;
             }
 
-            $Tarjeta->recargarSaldo($Tarjeta->cargaPendiente);
-
-            $boleto = new Boleto(uniqid(), time(), $this, $Tarjeta);
-
-            array_unshift($Tarjeta->historialBoletos, $boleto);
-
-            return $Tarjeta->saldo;
+            return $Tarjeta->descontarSaldo($this);
         }
 
         return false;

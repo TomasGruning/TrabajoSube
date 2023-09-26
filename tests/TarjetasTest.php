@@ -27,9 +27,9 @@ class TarjetasTest extends TestCase
         $tarjeta = new Tarjeta(uniqid(), 6500);
 
         $this->assertEquals($tarjeta->recargarSaldo(300), 6600);
-        $this->assertEquals($tarjeta->cargaPendiente, 200);
+        $this->assertEquals($tarjeta->getCargaPendiente(), 200);
         $this->assertEquals($cole->pagarCon($tarjeta), 6600);
-        $this->assertEquals($tarjeta->cargaPendiente, 80);
+        $this->assertEquals($tarjeta->getCargaPendiente(), 80);
     }
 }
 

@@ -12,20 +12,20 @@ class BoletoTest extends TestCase
         $tarjeta = new Tarjeta(uniqid(), 300);
 
         $cole->pagarCon($tarjeta);
-        $this->assertEquals($tarjeta->historialBoletos[0]->getTarjeta(), $tarjeta);
-        $this->assertEquals($tarjeta->historialBoletos[0]->Colectivo, $cole);
+        $this->assertEquals($tarjeta->getHistorialBoletos(0)->getTarjeta(), $tarjeta);
+        $this->assertEquals($tarjeta->getHistorialBoletos(0)->Colectivo, $cole);
 
         $tarjeta = new MedioBoleto(uniqid(), 300);
 
         $cole->pagarCon($tarjeta);
-        $this->assertEquals($tarjeta->historialBoletos[0]->getTarjeta(), $tarjeta);
-        $this->assertEquals($tarjeta->historialBoletos[0]->Colectivo, $cole);
+        $this->assertEquals($tarjeta->getHistorialBoletos(0)->getTarjeta(), $tarjeta);
+        $this->assertEquals($tarjeta->getHistorialBoletos(0)->Colectivo, $cole);
 
         $tarjeta = new BoletoGratuito(uniqid(), 300);
 
         $cole->pagarCon($tarjeta);
-        $this->assertEquals($tarjeta->historialBoletos[0]->getTarjeta(), $tarjeta);
-        $this->assertEquals($tarjeta->historialBoletos[0]->Colectivo, $cole);
+        $this->assertEquals($tarjeta->getHistorialBoletos(0)->getTarjeta(), $tarjeta);
+        $this->assertEquals($tarjeta->getHistorialBoletos(0)->Colectivo, $cole);
     }
 }
 
