@@ -4,7 +4,7 @@ namespace TrabajoSube;
 class Colectivo
 {
     public $linea;
-    private $precio = 120;
+    protected $precio = 120;
 
     public function __construct($linea)
     {
