@@ -55,11 +55,11 @@ class Tarjeta
 
     }
 
-    public function descontarSaldo($Colectivo)
+    public function descontarSaldo($Colectivo, $Tiempo)
     {
         $this->recargarSaldo($this->cargaPendiente);
 
-        $boleto = new Boleto(uniqid(), time(), $Colectivo, $this);
+        $boleto = new Boleto(uniqid(), $Tiempo, $Colectivo, $this);
         array_unshift($this->historialBoletos, $boleto);
 
         return $this->saldo;

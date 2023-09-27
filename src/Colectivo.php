@@ -50,13 +50,19 @@ class Colectivo
     }
 
     //Esta cosa tampoco
-    public function pagarCon($Tarjeta)
+    public function pagarCon($Tarjeta, $Tiempo = null)
     {
+        if ($Tiempo === null) {
+            $Tiempo = time();
+        }
+
         if ($Tarjeta->saldo - $this->precio >= $Tarjeta->getSaldoMinimo()) {
 
-            if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto" 
-            && $Tarjeta->getHistorialBoletos(0) != false 
-            && (time() - $Tarjeta->getHistorialBoletos(0)->getFecha_Hora()) < 5) {
+            if (
+                get_class($Tarjeta) == "TrabajoSube\MedioBoleto"
+                && $Tarjeta->getHistorialBoletos(0) != false
+                && ($Tiempo - $Tarjeta->getHistorialBoletos(0)->getFecha_Hora()) < 300
+            ) {
                 return false;
             } else if ($this->limiteExcedido($Tarjeta)) {
                 $Tarjeta->saldo = $Tarjeta->saldo - $this->precio;
@@ -64,7 +70,7 @@ class Colectivo
                 $Tarjeta->saldo = $Tarjeta->saldo - $this->precio + $Tarjeta->descuento;
             }
 
-            return $Tarjeta->descontarSaldo($this);
+            return $Tarjeta->descontarSaldo($this, $Tiempo);
         }
 
         return false;

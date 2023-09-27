@@ -30,15 +30,11 @@ class ColectivoTest extends TestCase
         //Caso verdadero
         $tarjeta = new MedioBoleto(uniqid(), 300);
         $cole->pagarCon($tarjeta);
-        sleep(6);
-
-        $this->assertEquals($cole->pagarCon($tarjeta), 180);
+        $this->assertEquals($cole->pagarCon($tarjeta, time()+6), 180);
 
         //Caso falso
         $cole->pagarCon($tarjeta);
-        sleep(3);
-
-        $this->assertEquals($cole->pagarCon($tarjeta), false);
+        $this->assertEquals($cole->pagarCon($tarjeta, time()+3), false);
 
     }
 
@@ -49,20 +45,18 @@ class ColectivoTest extends TestCase
         //Caso verdadero
         $tarjeta = new MedioBoleto(uniqid(), 300);
         for ($i = 0; $i < 2; $i++) {
-            $cole->pagarCon($tarjeta);
-            sleep(6);
+            $cole->pagarCon($tarjeta, time() + $i * 300);
         }
 
-        $this->assertEquals($cole->pagarCon($tarjeta), 120);
+        $this->assertEquals($cole->pagarCon($tarjeta, time() + 600), 120);
 
         //Caso falso
         $tarjeta = new MedioBoleto(uniqid(), 1000);
         for ($i = 0; $i < 4; $i++) {
-            $cole->pagarCon($tarjeta);
-            sleep(6);
+            $cole->pagarCon($tarjeta, time() + ($i) * 300);
         }
 
-        $this->assertEquals($cole->pagarCon($tarjeta), 640);
+        $this->assertEquals($cole->pagarCon($tarjeta, time() + 1200), 640);
 
     }
 
