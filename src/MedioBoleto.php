@@ -3,7 +3,7 @@ namespace TrabajoSube;
 
 class MedioBoleto extends Tarjeta
 {
-    public $descuento = 60;
+    public $descuentoPorcentaje = 50;
 }
 
 ?>

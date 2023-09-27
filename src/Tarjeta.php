@@ -7,7 +7,7 @@ class Tarjeta
     protected $saldo;
     protected $cargaPendiente = 0;
     protected $historialBoletos = [];
-    protected $descuento = 0;
+    protected $descuentoPorcentaje = 0;
     const saldoMinimo = -211.84;
     const saldoMaximo = 6600;
     const recargasPosibles = [150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 2000, 2500, 3000, 3500, 4000];
@@ -22,9 +22,9 @@ class Tarjeta
     {
         return $this->saldo;
     }
-    public function getDescuento()
+    public function getdescuentoPorcentaje()
     {
-        return $this->descuento;
+        return $this->descuentoPorcentaje;
     }
     public function getCargaPendiente()
     {
@@ -74,7 +74,7 @@ class Tarjeta
         if ($Excepcion) {
             $this->saldo = $this->saldo - $Colectivo->getPrecio();
         } else {
-            $this->saldo = $this->saldo - $Colectivo->getPrecio() + $this->descuento;
+            $this->saldo = $this->saldo - $Colectivo->getPrecio() + $Colectivo->getPrecio() * ($this->descuentoPorcentaje / 100);
         }
 
         $this->recargarSaldo($this->cargaPendiente);
