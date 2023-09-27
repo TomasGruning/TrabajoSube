@@ -25,9 +25,9 @@ class Colectivo
     private function limiteExcedido($Tarjeta)
     {
         if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto") {
-            if (isset($Tarjeta->historialBoletos[4])) {
+            if ($Tarjeta->getHistorialBoletos(3) != false) {
                 for ($i = 0; $i < 3; $i++) {
-                    if (date("d/m/Y", $Tarjeta->historialBoletos[$i]->getFecha_Hora()) != date("d/m/Y", $Tarjeta->historialBoletos[$i + 1]->getFecha_Hora())) {
+                    if (date("d/m/Y", $Tarjeta->getHistorialBoletos($i)->getFecha_Hora()) != date("d/m/Y", $Tarjeta->getHistorialBoletos($i + 1)->getFecha_Hora())) {
                         return false;
                     }
                 }
@@ -35,8 +35,8 @@ class Colectivo
                 return false;
             }
         } else if (get_class($Tarjeta) == "TrabajoSube\BoletoGratuito") {
-            if (isset($Tarjeta->historialBoletos[1])) {
-                if (date("d/m/Y", $Tarjeta->historialBoletos[0]->getFecha_Hora()) != date("d/m/Y", $Tarjeta->historialBoletos[1]->getFecha_Hora())) {
+            if ($Tarjeta->getHistorialBoletos(1) != false) {
+                if (date("d/m/Y", $Tarjeta->getHistorialBoletos(0)->getFecha_Hora()) != date("d/m/Y", $Tarjeta->getHistorialBoletos(1)->getFecha_Hora())) {
                     return false;
                 }
             } else {
@@ -55,8 +55,8 @@ class Colectivo
         if ($Tarjeta->saldo - $this->precio >= $Tarjeta->getSaldoMinimo()) {
 
             if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto" 
-            && isset($Tarjeta->historialBoletos[0]) 
-            && (time() - $Tarjeta->historialBoletos[0]->getFecha_Hora()) < 5) {
+            && $Tarjeta->getHistorialBoletos(0) != false 
+            && (time() - $Tarjeta->getHistorialBoletos(0)->getFecha_Hora()) < 5) {
                 return false;
             } else if ($this->limiteExcedido($Tarjeta)) {
                 $Tarjeta->saldo = $Tarjeta->saldo - $this->precio;

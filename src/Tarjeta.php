@@ -28,7 +28,8 @@ class Tarjeta
     }
     public function getHistorialBoletos($pos = 0)
     {
-        return $this->historialBoletos[$pos];
+        if(isset($this->historialBoletos[$pos])){return $this->historialBoletos[$pos];}
+        else{return false;}
     }
 
     public function recargarSaldo($recarga)
