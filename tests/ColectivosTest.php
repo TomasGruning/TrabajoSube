@@ -4,7 +4,7 @@ namespace TrabajoSube;
 
 use PHPUnit\Framework\TestCase;
 
-class ColectivoTest extends TestCase
+class ColectivosTest extends TestCase
 {
     public function testGetlinea()
     {
@@ -21,6 +21,17 @@ class ColectivoTest extends TestCase
 
         $tarjeta = new Tarjeta(uniqid(), -300);
         $this->assertEquals($cole->pagarCon($tarjeta), false);
+    }
+
+    public function testColectivoInterurbano()
+    {
+        $cole = new ColectivoInterurbano(112);
+
+        $tarjeta = new Tarjeta(uniqid(), 300);
+        $this->assertEquals($cole->pagarCon($tarjeta), 116);
+
+        $tarjeta = new MedioBoleto(uniqid(), 300);
+        $this->assertEquals($cole->pagarCon($tarjeta), 208);
     }
 }
 
