@@ -84,6 +84,26 @@ class TarjetasTest extends TestCase
         $this->assertEquals($cole->pagarCon($tarjeta), 300);
         $this->assertEquals($cole->pagarCon($tarjeta), 300);
     }
+
+    public function testFranquiciaLimitacionFranjaHoraria()
+    {
+        $cole = new Colectivo(103);
+
+        //Caso verdadero
+        $tarjeta = new MedioBoleto(uniqid(), 300);
+        
+        $tiempo = strtotime("2023-09-25 10:00:00"); 
+        $this->assertEquals($cole->pagarCon($tarjeta, $tiempo), 240);
+
+        //Casos falsos
+        $tarjeta = new MedioBoleto(uniqid(), 300);
+
+        $tiempo = strtotime("2023-09-25 23:00:00"); 
+        $this->assertEquals($cole->pagarCon($tarjeta, $tiempo), 180);
+        $tiempo = strtotime("2023-09-30 10:00:00"); 
+        $this->assertEquals($cole->pagarCon($tarjeta, $tiempo), 60);
+
+    }
 }
 
 ?>

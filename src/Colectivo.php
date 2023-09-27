@@ -20,8 +20,17 @@ class Colectivo
         return $this->precio;
     }
 
-    private function limiteExcedido($Tarjeta)
+    private function limiteExcedido($Tarjeta, $Tiempo)
     {
+        if (get_class($Tarjeta) != "TrabajoSube\Tarjeta") {
+            $diaSemana = date("w", $Tiempo);
+            $hora = date("G", $Tiempo);
+
+            if ($diaSemana == 0 || $diaSemana == 6 || $hora < 6 || $hora > 22) {
+                return true;
+            }
+        }
+
         if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto") {
             if ($Tarjeta->getHistorialBoletos(3) != false) {
                 for ($i = 0; $i < 3; $i++) {
@@ -63,7 +72,7 @@ class Colectivo
             ) {
                 return false;
             } else {
-                return $Tarjeta->descontarSaldo($this->limiteExcedido($Tarjeta), $this, $Tiempo);
+                return $Tarjeta->descontarSaldo($this->limiteExcedido($Tarjeta, $Tiempo), $this, $Tiempo);
             }
         }
 
