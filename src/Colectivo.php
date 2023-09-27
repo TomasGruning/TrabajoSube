@@ -21,10 +21,11 @@ class Colectivo
         return $this->precio;
     }
 
+    //Esta cosa probablemente no ande
     private function limiteExcedido($Tarjeta)
     {
         if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto") {
-            if (isset($Tarjeta->historialBoletos[3])) {
+            if (isset($Tarjeta->historialBoletos[4])) {
                 for ($i = 0; $i < 3; $i++) {
                     if (date("d/m/Y", $Tarjeta->historialBoletos[$i]->getFecha_Hora()) != date("d/m/Y", $Tarjeta->historialBoletos[$i + 1]->getFecha_Hora())) {
                         return false;
@@ -48,17 +49,16 @@ class Colectivo
         return true;
     }
 
+    //Esta cosa tampoco
     public function pagarCon($Tarjeta)
     {
         if ($Tarjeta->saldo - $this->precio >= $Tarjeta->getSaldoMinimo()) {
 
-            if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto") {
-                if (isset($Tarjeta->historialBoletos[0]) && (time() - $Tarjeta->historialBoletos[0]->getFecha_Hora()) < 5) {
-                    return false;
-                }
-            }
-
-            if ($this->limiteExcedido($Tarjeta)) {
+            if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto" 
+            && isset($Tarjeta->historialBoletos[0]) 
+            && (time() - $Tarjeta->historialBoletos[0]->getFecha_Hora()) < 5) {
+                return false;
+            } else if ($this->limiteExcedido($Tarjeta)) {
                 $Tarjeta->saldo = $Tarjeta->saldo - $this->precio;
             } else {
                 $Tarjeta->saldo = $Tarjeta->saldo - $this->precio + $Tarjeta->descuento;
