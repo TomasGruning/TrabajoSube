@@ -11,7 +11,6 @@ class Colectivo
         $this->linea = $linea;
     }
 
-    //Funcion de ejemplo para test
     public function getLinea()
     {
         return $this->linea;
@@ -21,7 +20,6 @@ class Colectivo
         return $this->precio;
     }
 
-    //Esta cosa probablemente no ande
     private function limiteExcedido($Tarjeta)
     {
         if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto") {
@@ -56,7 +54,7 @@ class Colectivo
             $Tiempo = time();
         }
 
-        if ($Tarjeta->saldo - $this->precio >= $Tarjeta->getSaldoMinimo()) {
+        if ($Tarjeta->getSaldo() - $this->precio >= $Tarjeta->getSaldoMinimo()) {
 
             if (
                 get_class($Tarjeta) == "TrabajoSube\MedioBoleto"
@@ -64,13 +62,9 @@ class Colectivo
                 && ($Tiempo - $Tarjeta->getHistorialBoletos(0)->getFecha_Hora()) < 300
             ) {
                 return false;
-            } else if ($this->limiteExcedido($Tarjeta)) {
-                $Tarjeta->saldo = $Tarjeta->saldo - $this->precio;
             } else {
-                $Tarjeta->saldo = $Tarjeta->saldo - $this->precio + $Tarjeta->descuento;
+                return $Tarjeta->descontarSaldo($this->limiteExcedido($Tarjeta), $this, $Tiempo);
             }
-
-            return $Tarjeta->descontarSaldo($this, $Tiempo);
         }
 
         return false;

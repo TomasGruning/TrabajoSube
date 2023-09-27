@@ -34,7 +34,7 @@ class Boleto
             "\n Precio: " . $this->Colectivo->getPrecio() .
             "\n ID Tarjeta: " . $this->Tarjeta->id .
             "\n Tipo de tarjeta: " . get_class($this->Tarjeta) .
-            "\n Saldo restante: " . $this->Tarjeta->saldo;
+            "\n Saldo restante: " . $this->Tarjeta->getSaldo();
     }
 }
 

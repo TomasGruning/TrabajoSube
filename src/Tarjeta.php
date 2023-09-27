@@ -4,13 +4,13 @@ namespace TrabajoSube;
 class Tarjeta
 {
     private $id;
-    public $saldo;
-    public $descuento = 0;
-    protected $saldoMinimo = -211.84;
-    protected $saldoMaximo = 6600;
-    protected $recargasPosibles = [150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 2000, 2500, 3000, 3500, 4000];
-    protected $historialBoletos = [];
+    protected $saldo;
     protected $cargaPendiente = 0;
+    protected $historialBoletos = [];
+    protected $descuento = 0;
+    const saldoMinimo = -211.84;
+    const saldoMaximo = 6600;
+    const recargasPosibles = [150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 2000, 2500, 3000, 3500, 4000];
 
     public function __construct($id, $saldo = 0)
     {
@@ -18,9 +18,13 @@ class Tarjeta
         $this->saldo = $saldo;
     }
 
-    public function getSaldoMinimo()
+    public function getSaldo()
     {
-        return $this->saldoMinimo;
+        return $this->saldo;
+    }
+    public function getDescuento()
+    {
+        return $this->descuento;
     }
     public function getCargaPendiente()
     {
@@ -28,20 +32,27 @@ class Tarjeta
     }
     public function getHistorialBoletos($pos = 0)
     {
-        if(isset($this->historialBoletos[$pos])){return $this->historialBoletos[$pos];}
-        else{return false;}
+        if (isset($this->historialBoletos[$pos])) {
+            return $this->historialBoletos[$pos];
+        } else {
+            return false;
+        }
+    }
+    public function getSaldoMinimo()
+    {
+        return self::saldoMinimo;
     }
 
     public function recargarSaldo($recarga)
     {
-        if (($this->saldo + $recarga) > $this->saldoMaximo) {
-            $this->cargaPendiente = ($this->saldo + $recarga) - $this->saldoMaximo;
-            $this->saldo = $this->saldoMaximo;
+        if (($this->saldo + $recarga) > self::saldoMaximo) {
+            $this->cargaPendiente = ($this->saldo + $recarga) - self::saldoMaximo;
+            $this->saldo = self::saldoMaximo;
 
             return $this->saldo;
         } else if ($this->cargaPendiente == 0) {
             for ($i = 0; $i < 23; $i++) {
-                if ($recarga == $this->recargasPosibles[$i]) {
+                if ($recarga == self::recargasPosibles[$i]) {
                     $this->saldo = $this->saldo + $recarga;
                     return $this->saldo;
                 }
@@ -55,13 +66,18 @@ class Tarjeta
 
     }
 
-    public function descontarSaldo($Colectivo, $Tiempo)
+    public function descontarSaldo($Excepcion, $Colectivo, $Tiempo)
     {
-        $this->recargarSaldo($this->cargaPendiente);
-
         $boleto = new Boleto(uniqid(), $Tiempo, $Colectivo, $this);
         array_unshift($this->historialBoletos, $boleto);
 
+        if ($Excepcion) {
+            $this->saldo = $this->saldo - $Colectivo->getPrecio();
+        } else {
+            $this->saldo = $this->saldo - $Colectivo->getPrecio() + $this->descuento;
+        }
+
+        $this->recargarSaldo($this->cargaPendiente);
         return $this->saldo;
     }
 
