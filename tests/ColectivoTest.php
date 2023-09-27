@@ -30,11 +30,11 @@ class ColectivoTest extends TestCase
         //Caso verdadero
         $tarjeta = new MedioBoleto(uniqid(), 300);
         $cole->pagarCon($tarjeta);
-        $this->assertEquals($cole->pagarCon($tarjeta, time()+6), 180);
+        $this->assertEquals($cole->pagarCon($tarjeta, time()+300), 180);
 
         //Caso falso
         $cole->pagarCon($tarjeta);
-        $this->assertEquals($cole->pagarCon($tarjeta, time()+3), false);
+        $this->assertEquals($cole->pagarCon($tarjeta, time()+60), false);
 
     }
 
