@@ -104,6 +104,38 @@ class TarjetasTest extends TestCase
         $this->assertEquals($cole->pagarCon($tarjeta, $tiempo), 60);
 
     }
+
+    public function testUsoFrecuente()
+    {
+        $cole = new Colectivo(103);
+        
+        //Caso Normal
+        $tarjeta = new Tarjeta(uniqid(), 6600);
+        for ($i = 0; $i < 19; $i++) {
+            $cole->pagarCon($tarjeta, time() + $i);
+        }
+
+        $this->assertEquals($cole->pagarCon($tarjeta, time() + 20), 4200);
+
+        //Caso 20%
+        $tarjeta = new Tarjeta(uniqid(), 6600);
+
+        for ($i = 0; $i < 29; $i++) {
+            $cole->pagarCon($tarjeta, time() + $i);
+        }
+        $this->assertEquals($cole->pagarCon($tarjeta, time() + 30), 3024);
+
+        //Caso 25%
+        $tarjeta = new Tarjeta(uniqid(), 6600);
+
+        for ($i = 0; $i < 89; $i++) {
+            $cole->pagarCon($tarjeta, time() + $i);
+            $tarjeta->recargarSaldo(6600-$tarjeta->getSaldo());
+            $this->assertEquals($tarjeta->getSaldo(), 6600);
+        }
+        $this->assertEquals($cole->pagarCon($tarjeta, time() + 90), 6510);
+
+    }
 }
 
 ?>

@@ -30,6 +30,9 @@ class Colectivo
                 return true;
             }
         }
+        else{
+            return false;
+        }
 
         if (get_class($Tarjeta) == "TrabajoSube\MedioBoleto") {
             if ($Tarjeta->getHistorialBoletos(3) != false) {
