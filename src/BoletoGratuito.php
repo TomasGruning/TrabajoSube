@@ -3,7 +3,7 @@ namespace TrabajoSube;
 
 class BoletoGratuito extends Tarjeta
 {
-    public $descuentoPorcentaje = 100;
+    protected $descuentoPorcentaje = 100;
 }
 
 ?>

@@ -15,7 +15,12 @@ class Tarjeta
     public function __construct($id, $saldo = 0)
     {
         $this->id = $id;
-        $this->saldo = $saldo;
+        if($saldo > 6600){
+            $this->saldo = 6600;
+        }
+        else{
+            $this->saldo = $saldo;
+        }
     }
 
     public function getSaldo()
@@ -45,7 +50,7 @@ class Tarjeta
 
     public function recargarSaldo($recarga)
     {
-        if (($this->saldo + $recarga) > self::saldoMaximo) {
+        if (($this->saldo + $recarga) >= self::saldoMaximo) {
             $this->cargaPendiente = ($this->saldo + $recarga) - self::saldoMaximo;
             $this->saldo = self::saldoMaximo;
 
@@ -74,6 +79,9 @@ class Tarjeta
         if ($Excepcion) {
             $this->saldo = $this->saldo - $Colectivo->getPrecio();
         } else {
+            if(get_class($this) == "TrabajoSube\Tarjeta"){
+                $this->usoFrecuente();
+            }
             $this->saldo = $this->saldo - $Colectivo->getPrecio() + $Colectivo->getPrecio() * ($this->descuentoPorcentaje / 100);
         }
 
@@ -81,6 +89,39 @@ class Tarjeta
         return $this->saldo;
     }
 
+    private function cantBoletosMes()
+    {
+        $cont = 1;
+
+        if(!isset($this->historialBoletos[1])){
+            return $cont;
+        }
+
+        for ($i = 0; $i < 79 && $i < sizeof($this->historialBoletos) - 1; $i++) {
+            if (
+                date("m", $this->historialBoletos[$i]->getFecha_Hora()) == date("m", $this->historialBoletos[$i + 1]->getFecha_Hora())
+            ) {
+                $cont++;
+            } else {
+                return $cont;
+            }
+        }
+
+        return $cont;
+    }
+
+    private function usoFrecuente()
+    {
+        if($this->cantBoletosMes() >= 80){
+            $this->descuentoPorcentaje = 25;
+        }
+        else if($this->cantBoletosMes() >= 30){
+            $this->descuentoPorcentaje = 20;
+        }
+        else{
+            $this->descuentoPorcentaje = 0;
+        }
+    }
 }
 
 ?>
