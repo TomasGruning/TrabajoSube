@@ -3,6 +3,7 @@ namespace TrabajoSube;
 
 class Boleto
 {
+    // Propiedades privadas para almacenar información del boleto
     private $id;
     private $fecha_hora;
     public $Colectivo;
@@ -20,11 +21,13 @@ class Boleto
     {
         return $this->Tarjeta;
     }
+
     public function getFecha_Hora()
     {
         return $this->fecha_hora;
     }
 
+    // Método para imprimir un recibo del boleto
     function imprimirRecibo()
     {
         return

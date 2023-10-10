@@ -15,6 +15,7 @@ class Tarjeta
     public function __construct($id, $saldo = 0)
     {
         $this->id = $id;
+        // Validación del saldo para asegurar que no exceda el saldo máximo
         if($saldo > 6600){
             $this->saldo = 6600;
         }

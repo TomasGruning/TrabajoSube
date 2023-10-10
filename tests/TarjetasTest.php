@@ -37,12 +37,12 @@ class TarjetasTest extends TestCase
     {
         $cole = new Colectivo(103);
 
-        //Caso verdadero
+        // Caso verdadero
         $tarjeta = new MedioBoleto(uniqid(), 300);
         $cole->pagarCon($tarjeta);
         $this->assertEquals($cole->pagarCon($tarjeta, time() + 300), 180);
 
-        //Caso falso
+        // Caso falso
         $cole->pagarCon($tarjeta);
         $this->assertEquals($cole->pagarCon($tarjeta, time() + 60), false);
 
@@ -52,7 +52,7 @@ class TarjetasTest extends TestCase
     {
         $cole = new Colectivo(103);
 
-        //Caso verdadero
+        // Caso verdadero
         $tarjeta = new MedioBoleto(uniqid(), 300);
         for ($i = 0; $i < 2; $i++) {
             $cole->pagarCon($tarjeta, time() + $i * 300);
@@ -60,7 +60,7 @@ class TarjetasTest extends TestCase
 
         $this->assertEquals($cole->pagarCon($tarjeta, time() + 600), 120);
 
-        //Caso falso
+        // Caso falso
         $tarjeta = new MedioBoleto(uniqid(), 1000);
         for ($i = 0; $i < 4; $i++) {
             $cole->pagarCon($tarjeta, time() + ($i) * 300);
@@ -89,13 +89,13 @@ class TarjetasTest extends TestCase
     {
         $cole = new Colectivo(103);
 
-        //Caso verdadero
+        // Caso verdadero
         $tarjeta = new MedioBoleto(uniqid(), 300);
         
         $tiempo = strtotime("2023-09-25 10:00:00"); 
         $this->assertEquals($cole->pagarCon($tarjeta, $tiempo), 240);
 
-        //Casos falsos
+        // Casos falsos
         $tarjeta = new MedioBoleto(uniqid(), 300);
 
         $tiempo = strtotime("2023-09-25 23:00:00"); 
@@ -109,7 +109,7 @@ class TarjetasTest extends TestCase
     {
         $cole = new Colectivo(103);
         
-        //Caso Normal
+        // Caso Normal
         $tarjeta = new Tarjeta(uniqid(), 6600);
         for ($i = 0; $i < 19; $i++) {
             $cole->pagarCon($tarjeta, time() + $i);
@@ -117,7 +117,7 @@ class TarjetasTest extends TestCase
 
         $this->assertEquals($cole->pagarCon($tarjeta, time() + 20), 4200);
 
-        //Caso 20%
+        // Caso 20%
         $tarjeta = new Tarjeta(uniqid(), 6600);
 
         for ($i = 0; $i < 29; $i++) {
@@ -125,7 +125,7 @@ class TarjetasTest extends TestCase
         }
         $this->assertEquals($cole->pagarCon($tarjeta, time() + 30), 3024);
 
-        //Caso 25%
+        // Caso 25%
         $tarjeta = new Tarjeta(uniqid(), 6600);
 
         for ($i = 0; $i < 89; $i++) {
